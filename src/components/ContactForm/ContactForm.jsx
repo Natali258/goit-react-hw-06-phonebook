@@ -1,16 +1,16 @@
 import React from 'react';
 import s from './ContactForm.module.css';
-import {
-  addContact,
-  changeName,
-  changeNumber,
-} from '../../redux/contacts/actions';
+
 import { useDispatch, useSelector } from 'react-redux';
+
 import {
   selectName,
   selectNumber,
   selectContacts,
-} from '../../redux/contacts/selectors';
+  addContact,
+  changeName,
+  changeNumber,
+} from '../../redux/contacts/slice';
 import { nanoid } from '@reduxjs/toolkit';
 
 export const ContactForm = () => {

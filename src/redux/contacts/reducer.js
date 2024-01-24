@@ -1,3 +1,12 @@
+import { createReducer } from '@reduxjs/toolkit';
+import {
+  deleteContact,
+  addContact,
+  changeName,
+  changeNumber,
+  changeFilter,
+} from './actions';
+
 const initialState = {
   name: '',
   number: '',
@@ -10,25 +19,47 @@ const initialState = {
   filter: '',
 };
 
-export const formReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'deleteContact':
-      return {
-        ...state,
-        contacts: state.contacts.filter(
-          contact => contact.id !== action.payload
-        ),
-      };
-    case 'addContact':
-      return { ...state, contacts: [...state.contacts, action.payload] };
-    case 'changeName':
-      return { ...state, name: action.payload };
-    case 'changeNumber':
-      return { ...state, number: action.payload };
-    case 'changeFilter':
-      return { ...state, filter: action.payload };
+export const formReducer = createReducer(initialState, builder => {
+  builder
 
-    default:
-      return state;
-  }
-};
+    .addCase(deleteContact, (state, action) => {
+      state.contacts = state.contacts.filter(
+        contact => contact.id !== action.payload
+      );
+    })
+    .addCase(addContact, (state, action) => {
+      state.contacts = [...state.contacts, action.payload];
+    })
+    .addCase(changeName, (state, action) => {
+      state.name = action.payload;
+    })
+    .addCase(changeNumber, (state, action) => {
+      state.number = action.payload;
+    })
+    .addCase(changeFilter, (state, action) => {
+      state.filter = action.payload;
+    });
+});
+
+// export const formReducer = (state = initialState, action) => {
+//   switch (action.type) {
+//     case 'deleteContact':
+//       return {
+//         ...state,
+//         contacts: state.contacts.filter(
+//           contact => contact.id !== action.payload
+//         ),
+//       };
+//     case 'addContact':
+//       return { ...state, contacts: [...state.contacts, action.payload] };
+//     case 'changeName':
+//       return { ...state, name: action.payload };
+//     case 'changeNumber':
+//       return { ...state, number: action.payload };
+//     case 'changeFilter':
+//       return { ...state, filter: action.payload };
+
+//     default:
+//       return state;
+//   }
+// };
