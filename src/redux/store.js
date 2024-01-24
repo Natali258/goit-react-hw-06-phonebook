@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { contactsReducer } from '../contacts/slice';
+import { phoneBookReducer } from './contacts/slice';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer } from 'redux-persist';
 import {
@@ -11,17 +11,19 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
+import { formReducer } from './form/slice';
 
 const persistConfig = {
   key: 'contactsItem',
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, contactsReducer);
+const persistedReducer = persistReducer(persistConfig, phoneBookReducer);
 
 export const store = configureStore({
   reducer: {
     contacts: persistedReducer,
+    form: formReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
