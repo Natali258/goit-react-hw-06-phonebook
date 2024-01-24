@@ -41,7 +41,7 @@ export const formReducer = createReducer(initialState, builder => {
     });
 });
 
-// export const formReducer = (state = initialState, action) => {
+// export const formsReducer = (state = initialState, action) => {
 //   switch (action.type) {
 //     case 'deleteContact':
 //       return {
