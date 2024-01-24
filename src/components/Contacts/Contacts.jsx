@@ -1,6 +1,21 @@
 import s from './Contacts.module.css';
+import { useDispatch, useSelector } from 'react-redux';
 
-export const Contacts = ({ contacts, deleteContact }) => {
+import { selectContacts, selectFilter } from '../../redux/contacts/selectors';
+import { deleteContact } from '../../redux/contacts/actions';
+
+export const Contacts = () => {
+  const dispatch = useDispatch();
+  const contactsItems = useSelector(selectContacts);
+
+  const filter = useSelector(selectFilter);
+
+  const getFilterValue = () => {
+    return contactsItems.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  };
+  const contacts = getFilterValue();
   return (
     <div>
       <ul className={s.contactsList}>
@@ -8,7 +23,7 @@ export const Contacts = ({ contacts, deleteContact }) => {
           <li className={s.contactLi} key={contact.id}>
             {contact.name}: {contact.number}
             <button
-              onClick={() => deleteContact(contact.id)}
+              onClick={() => dispatch(deleteContact(contact.id))}
               className={s.btnLi}
             >
               Delete

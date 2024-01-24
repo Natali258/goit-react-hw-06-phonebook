@@ -1,23 +1,50 @@
-import React, { useState } from 'react';
+import React from 'react';
 import s from './ContactForm.module.css';
+import {
+  addContact,
+  changeName,
+  changeNumber,
+} from '../../redux/contacts/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectName,
+  selectNumber,
+  selectContacts,
+} from '../../redux/contacts/selectors';
+import { nanoid } from '@reduxjs/toolkit';
 
-export const ContactForm = ({ addContacts }) => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+export const ContactForm = () => {
+  const dispatch = useDispatch();
+  const name = useSelector(selectName);
+  const number = useSelector(selectNumber);
+  const contacts = useSelector(selectContacts);
 
-  const changeFilter = e => {
+  const addFormContact = e => {
     e.preventDefault();
-    addContacts(name, number);
-    setName('');
-    setNumber('');
+    const isExist = contacts.some(contact => {
+      return contact.name.toLowerCase() === name.toLowerCase();
+    });
+    if (isExist) {
+      alert(`${name} is already in contacts`);
+      return;
+    }
+    console.log(contacts);
+    dispatch(
+      addContact({
+        id: nanoid(),
+        name,
+        number,
+      })
+    );
   };
+
   return (
     <div>
-      <form onSubmit={changeFilter} className={s.forma}>
+      <form onSubmit={addFormContact} className={s.forma}>
         <span className={s.label}>Name</span>
         <input
           value={name}
-          onChange={e => setName(e.target.value)}
+          onChange={e => dispatch(changeName(e.target.value))}
           type="text"
           name="name"
           required
@@ -26,7 +53,7 @@ export const ContactForm = ({ addContacts }) => {
         <span className={s.label}>Number</span>
         <input
           value={number}
-          onChange={e => setNumber(e.target.value)}
+          onChange={e => dispatch(changeNumber(e.target.value))}
           type="tel"
           name="number"
           required
