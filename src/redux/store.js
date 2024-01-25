@@ -11,11 +11,11 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-import { formReducer } from './form/slice';
 
 const persistConfig = {
   key: 'contactsItem',
   storage,
+  blacklist: ['filter'],
 };
 
 const persistedReducer = persistReducer(persistConfig, phoneBookReducer);
@@ -23,7 +23,6 @@ const persistedReducer = persistReducer(persistConfig, phoneBookReducer);
 export const store = configureStore({
   reducer: {
     contacts: persistedReducer,
-    form: formReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
